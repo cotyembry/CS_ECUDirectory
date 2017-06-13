@@ -1,0 +1,10 @@
+Script started on Fri 26 Aug 2016 12:41:16 AM CDT
+johcemb@cs8:~/UnixAdministration/assignment1$ lpstat -o
+lab02-49565             johcemb          12288   Fri 26 Aug 2016 12:40:58 AM CDT
+lab02-49566             johcemb          12288   Fri 26 Aug 2016 12:41:00 AM CDT
+johcemb@cs8:~/UnixAdministration/assignment1$ cancel `lpstat -o | grep johcemb | cut -d"-" -f2 | cut -d" " -f1`
+johcemb@cs8:~/UnixAdministration/assignment1$ lpstat -o
+johcemb@cs8:~/UnixAdministration/assignment1$ exit
+exit
+
+Script done on Fri 26 Aug 2016 12:42:13 AM CDT
