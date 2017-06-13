@@ -1,0 +1,6 @@
+VAR x;
+BEGIN
+x := 3;
+?x
+END
+.

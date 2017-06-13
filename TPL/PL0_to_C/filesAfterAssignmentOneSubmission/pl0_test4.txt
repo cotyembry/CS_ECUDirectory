@@ -1,0 +1,9 @@
+VAR x, y;
+BEGIN
+x := 3;
+y := 15;
+?x;
+?y;
+! y / x
+END
+.

@@ -1,0 +1,7 @@
+Script started on Mon Apr 18 19:43:05 2016
+johcemb@cs8:~/TPL/PL0_to_C$ a.out >
+bash: syntax error near unexpected token `newline'
+johcemb@cs8:~/TPL/PL0_to_C$ a exit
+exit
+
+Script done on Mon Apr 18 19:43:50 2016

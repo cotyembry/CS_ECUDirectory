@@ -1,0 +1,13 @@
+#!/usr/bin/perl
+#Author: John Coty Embry
+#Date:   04/19/2016
+#This will bison, then flex, then compile the files in order with the 
+#system commands on lines 9, 11, and 13
+
+#I'm mimicking a 'make' file
+
+system"bison -d pl0.y";
+sleep 0.5;
+system"flex pl0.l";
+sleep 0.5;
+system"gcc pl0.tab.c lex.yy.c";

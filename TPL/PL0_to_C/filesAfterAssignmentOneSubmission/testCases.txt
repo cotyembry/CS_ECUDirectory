@@ -1,0 +1,21 @@
+Script started on Mon Apr 18 19:58:15 2016
+johcemb@cs8:~/TPL/PL0_to_C$ gfb
+johcemb@cs8:~/TPL/PL0_to_C$ a.out < pl0_test1.txt > pl0_test1Result.c
+johcemb@cs8:~/TPL/PL0_to_C$ gcc pl0_test1Result.c
+johcemb@cs8:~/TPL/PL0_to_C$ a.out
+3johcemb@cs8:~/TPL/PL0_to_C$ gfb
+johcemb@cs8:~/TPL/PL0_to_C$ a.out < pl0_tse  est2.txt > pl0_teset  t2Result.c
+johcemb@cs8:~/TPL/PL0_to_C$ gcc pl0_test2Result.c 
+johcemb@cs8:~/TPL/PL0_to_C$ a.out
+0johcemb@cs8:~/TPL/PL0_to_C$ gfb
+johcemb@cs8:~/TPL/PL0_to_C$ a.out < pl0_test3.txt > pl0_test3Result.c
+johcemb@cs8:~/TPL/PL0_to_C$ gcc pl0_test3Result.c
+johcemb@cs8:~/TPL/PL0_to_C$ a.out
+3johcemb@cs8:~/TPL/PL0_to_C$ gfb
+johcemb@cs8:~/TPL/PL0_to_C$ a.out < pl0_test4.txt > pl0_test4Result.c
+johcemb@cs8:~/TPL/PL0_to_C$ a.out     gcc pl0_test4Result.c
+johcemb@cs8:~/TPL/PL0_to_C$ a.out
+3155johcemb@cs8:~/TPL/PL0_to_C$ exit
+exit
+
+Script done on Mon Apr 18 20:08:25 2016

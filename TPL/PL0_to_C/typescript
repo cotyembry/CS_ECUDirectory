@@ -1,0 +1,108 @@
+Script started on Sat Apr 23 17:06:39 2016
+johcemb@cs8:~/TPL/PL0_to_C$ gfb
+johcemb@cs8:~/TPL/PL0_to_C$ a.out < pl0_1.txt > pl0_1Result.c
+johcemb@cs8:~/TPL/PL0_to_C$ gcc pl0_1Result.c
+johcemb@cs8:~/TPL/PL0_to_C$ a.out
+1
+4
+9
+16
+25
+36
+49
+64
+81
+100
+johcemb@cs8:~/TPL/PL0_to_C$ gfb
+johcemb@cs8:~/TPL/PL0_to_C$ a.out < pl0_2.txt > pl0_2Result.c
+johcemb@cs8:~/TPL/PL0_to_C$ gcc pl0_2REsu   esult.c
+johcemb@cs8:~/TPL/PL0_to_C$ a.out
+0
+595
+12
+johcemb@cs8:~/TPL/PL0_to_C$ cat pl0_1.txt
+VAR x, squ;
+
+PROCEDURE square;
+BEGIN
+   squ:= x * x
+END;
+
+BEGIN
+   x := 1;
+   WHILE x <= 10 DO
+   BEGIN
+      CALL square;
+      ! squ;
+      x := x + 1
+   END
+END.
+johcemb@cs8:~/TPL/PL0_to_C$ catp  pl0_2.txt
+CONST
+  m =  7,
+  n = 85;
+
+VAR
+  x, y, z, q, r;
+
+PROCEDURE multiply;
+VAR a, b;
+
+BEGIN
+  a := x;
+  b := y;
+  z := 0;
+  WHILE b > 0 DO BEGIN
+    IF ODD b THEN z := z + a;
+    a := 2 * a;
+    b := b / 2
+  END
+END;
+
+PROCEDURE divide;
+VAR w;
+BEGIN
+  r := x;
+  q := 0;
+  w := y;
+  WHILE w <= r DO w := 2 * w;
+  WHILE w > y DO BEGIN
+    q := 2 * q;
+    w := w / 2;
+    IF w <= r THEN BEGIN
+      r := r - w;
+      q := q + 1
+    END
+  END
+END;
+
+PROCEDURE gcd;
+VAR f, g;
+BEGIN
+  f := x;
+  g := y;
+  WHILE f # g DO BEGIN
+    IF f < g THEN g := g - f;
+    IF g < f THEN f := f - g
+  END;
+  z := f
+END;
+
+BEGIN
+  x := m;
+  y := n;
+? z;
+  CALL multiply;
+  x := 25;
+  y :=  3;
+? z;
+  CALL divide;
+  x := 84;
+  y := 36;
+  CALL gcd;
+? z
+END.
+johcemb@cs8:~/TPL/PL0_to_C$ exit
+exit
+
+Script done on Sat Apr 23 17:07:57 2016

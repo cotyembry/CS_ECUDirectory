@@ -1,0 +1,12 @@
+VAR x;
+PROCEDURE square;
+BEGIN
+	x := x * x;
+	y := y * 3
+END
+
+BEGIN
+CALL square;
+?x
+END
+.

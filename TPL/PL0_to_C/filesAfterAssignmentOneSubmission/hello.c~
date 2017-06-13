@@ -1,0 +1,61 @@
+#include <stdio.h>
+#include <string.h>
+
+void my_utoa(int dataIn, char* bffr, int radix) {
+	int temp_dataIn;
+	temp_dataIn = dataIn;
+	int stringLen=1;
+
+	while ((int)temp_dataIn/radix != 0){
+   	temp_dataIn = (int)temp_dataIn/radix;
+   	stringLen++;
+	}
+	//printf("stringLen = %d\n", stringLen);
+	temp_dataIn = dataIn;
+	do {
+   	*(bffr+stringLen-1) = (temp_dataIn%radix)+'0';
+   	temp_dataIn = (int) temp_dataIn / radix;
+	}
+	while(stringLen--);
+}
+
+//this will take in a valid string and return it as an integer
+int toInteger(char a[]) {
+  int c, sign, offset, n;
+ 
+  if (a[0] == '-') {  // Handle negative integers
+    sign = -1;
+  }
+ 
+  if (sign == -1) {  // Set starting position to convert
+    offset = 1;
+  }
+  else {
+    offset = 0;
+  }
+ 
+  n = 0;
+ 
+  for (c = offset; a[c] != '\0'; c++) {
+    n = n * 10 + a[c] - '0';
+  }
+ 
+  if (sign == -1) {
+    n = -n;
+  }
+ 
+  return n;
+}
+
+
+void main() {
+	//any time you do (someNumber % 2) if the result is anything but 0, it is odd
+	//printf("%d\n", 154%2);	
+
+		
+
+	//int length = strlen("5476");
+	char buffer[50];
+	my_utoa(123, buffer, 10);
+	printf("%s\n",buffer);
+}

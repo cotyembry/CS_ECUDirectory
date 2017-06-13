@@ -1,0 +1,176 @@
+%{
+#include <stdio.h>
+
+char* nameOfVar = ""; //I will possibly use this when stating the line number the variable names are found on
+unsigned lineCount = 1;
+void functionFormatter(char*, size_t); //declare the subfunction with the types of the parameters
+void singleVariableFormatter(char*, size_t);
+void multipleVariableFormatter(char*, size_t);
+
+//TODO: account for a function returning 'char*' or 'char *' or a generic type (if there is such a thing)
+//TODO: what if multiple operators are given in a row when assigning a default value to a variable declaration
+//TODO: what if after the operator there isn't a constant, but another varialbe?...make sure it has already been declared
+//TODO: Line 30:160	fix it where it recognizes the string at the end of a multiple variable declaration i.e. int test, another, lakdjf45; to make sure the lakdjf45; part is recognized in particular (right now I'm hacking it to get everything else past a certain pattern which is bad... i.e. .*)
+%}
+
+WS [ \t\n]
+WORD [a-zA-Z]
+OP [\+\-\/\*\^\=]
+DIGIT [0-9]
+
+%%
+(\n)	lineCount++;
+#.*$
+(((void)|(int)|(float)|(double)){WS}{WORD}+{WS}*\(.*\))	functionFormatter(yytext, strlen(yytext)); 
+
+
+(int|float|double){WS}+\_*{WORD}+(\_*|{DIGIT}*|{WORD}*)*{WS}*{OP}*{WS}*{DIGIT}*;		singleVariableFormatter(yytext, strlen(yytext));
+  
+														   		      
+(int|float|double){WS}+\_*{WORD}+(\_*|{DIGIT}*|{WORD}*)*{WS}*\,((({WS}*\_*{WORD}+(\_*|{WORD}*|{DIGIT}*)*{WS}*{OP}*{WS}*{DIGIT}*{WS}*,)*)|{WS}*\_*{WORD}+(\_*|{DIGIT}*|{WORD}*)*{WS}*.*)		multipleVariableFormatter(yytext, strlen(yytext));
+
+.
+%%
+
+//int{WS}+\_*{WORD}+((\_*)|({DIGIT}*|{WORD}*))*({WS}*{OP}*{WS}*{DIGIT}*;|((,){WS}*\_*{WORD}+((\_*)|({DIGIT}*)|{WORD}*)*{WS}*{OP}*{WS}*{DIGIT}*)+;)		printf("found >%s<\n", yytext);
+
+
+
+int yywrap() { return 1; }
+    
+void main() {
+  yylex();
+}
+
+//I use this function to format my string to be able to print out the data dictionary correctly
+void functionFormatter(char* myString, size_t lengthOfArray) {
+  char* functionName = malloc(lengthOfArray*sizeof(char)); //allocate the array
+  int i = 0, j = 0; //I'll use these for help with constructing the functionName array
+  
+  //iterate through the char array and get just the function name
+  //if we get here we know the form of the string is something like "word functionName (blah blah)"
+  for( i; i < lengthOfArray; i++) {
+    
+    if(myString[i] == ' ') {
+      i++; //now the next letters until the next space or a '(' is the function name I want
+      while(myString[i] != ' ' && myString[i] != '(') { 
+	functionName[j] = myString[i];
+	i++;
+	j++;
+      }
+      i = lengthOfArray; //this is to terminate the for loop
+    }
+    
+  }
+  
+  printf("function : %s : line %u\n", functionName, lineCount);
+  free (functionName); //free the memory used
+}
+
+void singleVariableFormatter(char* fullStringWithVariableName, size_t lengthOfArray) {
+
+  //when this is called, the string is either in the form "int varName;" or "int varName = 0;"
+  //go through this char array and get the variable names
+  char* variableName = malloc(lengthOfArray*sizeof(char));
+  int i = 0, j = 0; //I'll use these for help with constructing the variableName array
+  
+  for( i; i < lengthOfArray; i++) {
+  
+    if(fullStringWithVariableName[i] == ' ') {
+      i++; //the current location in the array must now be the start of the variable name
+	   //from here the variable name will be ended with a ' ', ';', or a '=' sign
+	
+      while(fullStringWithVariableName[i] != ' ' && fullStringWithVariableName[i] != ';' && fullStringWithVariableName[i] != '=') {
+	  variableName[j] = fullStringWithVariableName[i];
+	  
+	  i++;
+	  j++;
+      }
+      i = lengthOfArray; //this is to terminate the for loop
+    }
+  
+  }
+  printf("variable : %s : line %u\n", variableName, lineCount);
+  free(variableName); //free the memory used
+}
+
+//varLine is the regex expression that was matched that has the multiple variable names 
+void multipleVariableFormatter(char* varLine, size_t lengthOfArray) {
+  //when this is called, the string is either in the form "int varName, anotherName;" or something like "int varName = 0, anotherName;"
+  //go through this char array and get the variable names
+  //it is safe in the while loops no to check if the array is greater than lengthOfArray since I know this string ends with a ';'
+
+  char* variableName = malloc(lengthOfArray*sizeof(char));
+
+  int i = 0, j = 0;
+  
+  //printf("found: >%s<\n", varLine);
+  
+  //this if else stuff just matches the appropriate types for the variable declarations
+  if(varLine[0] == 'i' && varLine[1] == 'n' && varLine[2] == 't') {
+    //now iterate through the array to get the variable declarations
+    //since we know that we are in the int case the 5th letter (# 4 in array subscript) will be the start of the 1st variable name
+    i = 3; //I put 3 because I'm preparing for the for loop that is about to happen and increment i;
+    
+    //I'd rather put this following line here rather than in the for loop, but I'm having an issue removing the characters in the array
+    //char* tempVarName = malloc(lengthOfArray*sizeof(char)); //I'll use this to get the variable name one at a time
+      int k = 0;
+    
+    for( i; i < lengthOfArray; i++) {
+      
+      //I'd rather remove this following line of code and have it above (where its commented out) but I'm having issues with deleting the characters in the array
+      char* tempVarName = malloc(lengthOfArray*sizeof(char)); //I'll use this to get the variable name one at a time
+      
+      while(varLine[i] != ',' && varLine[i] != ';') { 
+	//push the characters onto a temporary array for use later if it isn't a space
+	if(varLine[i] != ' ') {
+	  //also check to make sure a default value isn't being set. If one is, don't include that until the next ',' or ';' in the variable name
+	  if(varLine[i] == '=') {
+	    i++;
+	    while(varLine[i] != ',' && varLine[i] != ';') {
+	      i++; //I do this to disregard the rest of the default assignment part since this isn't needed to get the variable name
+	    }
+	  }
+	  else {
+	    //printf("about to assign: %c\n", varLine[i]);
+	    //printf("before the assign: %s\n", tempVarName);
+	    tempVarName[k] = varLine[i];
+	    //printf("it is now: %s\n", tempVarName);
+	    i++;
+	    k++; //definitely need to increment k
+	  }
+	}
+	else {
+	  i++; //need to increment i to get away from the ' '
+	}
+      }
+      if(varLine[i] == ';') {
+	//we are done and want to quit the loop
+	i = lengthOfArray;
+      }
+
+      
+      printf("variable : %s : line %u\n", tempVarName, lineCount);
+      k = 0; //this resets the variable for use later
+     
+     //I would rather do the following line of code later where I have it commented out, but I'm having a problem removign the characters from the array, so I'm having to resort do doing it this way - for now anyways
+     free(tempVarName); //this frees the memory used for the array
+     
+     //strcpy(tempVarName, ""); //this just empties the temp array without having to reallocate memory since I'll use it again later - possibly    
+     
+    }
+    
+    //free(tempVarName);
+  }
+  else 
+    if(varLine[0] == 'f' && varLine[1] == 'l' && varLine[2] == 'o' && varLine[3] == 'a' && varLine[4] == 't') {
+      printf("matched float\n");
+    }
+    else
+      if(varLine[0] == 'd' && varLine[1] == 'o' && varLine[2] == 'u' && varLine[3] == 'b' && varLine[4] == 'l' && varLine[5] == 'e') {
+	printf("matched double\n");
+      }
+  
+  
+  
+}

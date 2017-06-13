@@ -1,0 +1,23 @@
+Script started on Thu 11 Feb 2016 10:50:46 AM CST
+johcemb@cs8:~/Downloads$ flex calculator_v1.l
+johcemb@cs8:~/Downloads$ bison -d calculator_v1.y
+johcemb@cs8:~/Downloads$ gcc lex.yy.c calculator_v1_tab[K[K[K[K.tab_[K.c
+johcemb@cs8:~/Downloads$ a.out
+1024 * 10 * 4
+= 40960
+johcemb@cs8:~/Downloads$ a.out
+3 + 3.3
+= 6.300000
+johcemb@cs8:~/Downloads$ a.out
+(8+4) / 2.00
+= 6.000000
+johcemb@cs8:~/Downloads$ a.out
+(24 - 12) % 5
+= 2
+johcemb@cs8:~/Downloads$ a.out
+100500066
+= 100500066
+johcemb@cs8:~/Downloads$ exit
+exit
+
+Script done on Thu 11 Feb 2016 10:51:57 AM CST
